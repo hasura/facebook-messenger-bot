@@ -7,6 +7,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 let FACEBOOK_VERIFY_TOKEN = "my_password";
+let FACEBOOK_PAGE_ACCESS_TOKEN = "EAAZAZAhL1jbuEBACGr4EzJlNOQd9IZCEyk7J6eJbvbs7qimW16TT1SJ8ol0a4gAESg6iWvLgVZBN4Kv3D4ESRYGJrWfmrBlFjmqODaL5BAN7twhpOS8Cplce34XUppWQsZBZCwgpZAS4z8DBHtEmiteS5CIZAZAqAzkwxYvKvOnBjPgZDZD";
 
 //your routes here
 app.get('/', function (req, res) {
@@ -19,6 +20,11 @@ app.get('/webhook/', function(req, res) {
     }
     res.send('Error, wrong token')
 });
+
+app.post('/webhook/', function(req, res) {
+  console.log(req);
+  res.statusCode(200);
+})
 
 
 
