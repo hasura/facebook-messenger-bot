@@ -3,7 +3,7 @@ var app = express();
 
 //your routes here
 app.get('/', function (req, res) {
-    res.send("Hello World!");
+    res.send("Hello World, I am a bot.");
 });
 
 app.listen(8080, function () {
