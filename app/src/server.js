@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlEncoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false}));
 
 let FACEBOOK_VERIFY_TOKEN = "my_password";
 
