@@ -3,6 +3,8 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 
+let mdb = require('moviedb')('87435796fadd1be0372685ee1fcc033f');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -31,8 +33,9 @@ app.post('/webhook/', function(req, res) {
           entry.messaging.forEach(function(messagingObject) {
               var senderId = messagingObject.sender.id;
               if (messagingObject.message) {
-                var message = messagingObject.message.text;
-                sendMessageToUser(senderId, message);
+                //Assuming that everything sent to this bot is a movie name.
+                var movieName = messagingObject.message.text;
+                getMovieDetails(senderId, movieName);
               }
           });
         } else {
@@ -69,6 +72,18 @@ function sendMessageToUser(senderId, message) {
   });
 }
 
+function getMovieDetails(senderId, movieName) {
+  var message = 'Found details on ' + movieName;
+  mdb.searchMovie({ query: movieName }, (err, res) => {
+    if (err) {
+      console.log('Error using movieDB: ' + err);
+      sendMessageToUser(senderId, 'Error finding details on ' + movieName);
+    } else {
+      console.log(res);
+      sendMessageToUser(senderId, message);
+    }
+  });
+}
 
 
 app.listen(8080, function () {
