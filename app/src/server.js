@@ -49,7 +49,7 @@ app.post('/webhook/', function(req, res) {
 })
 
 function sendMessageToUser(senderId, message) {
-  request(
+  request({
     url: FACEBOOK_SEND_MESSAGE_URL,
     method: 'POST',
     json: {
@@ -59,12 +59,13 @@ function sendMessageToUser(senderId, message) {
       message: {
         text: message
       }
-    }, function(error, response, body) {
-      if (error) {
-        console.log('Error sending message to user: ' + error);
-      } else if (response.body.error){
-        console.log('Error sending message to user: ' + response.body.error);
-      }
+    }
+  }, function(error, response, body) {
+        if (error) {
+          console.log('Error sending message to user: ' + error);
+        } else if (response.body.error){
+          console.log('Error sending message to user: ' + response.body.error);
+        }
   });
 }
 
