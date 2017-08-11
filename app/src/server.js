@@ -158,7 +158,7 @@ function getMovieDetails(senderId, movieName) {
         if (res.results.length > 0) {
           var elements = []
           var resultCount =  res.result.length > 5 ? 5 : res.result.length;
-          for (int i = 0; i < resultCount; i++) {
+          for (i = 0; i < resultCount; i++) {
             var result = res.results[i];
             elements.push(getElementObject(result));
             sendUIMessageToUser(senderId, elements);
