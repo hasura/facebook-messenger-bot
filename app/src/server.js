@@ -98,11 +98,10 @@ function sendUIMessageToUser(senderId) {
       }
     }
   }, function(error, response, body) {
-    console.log('Error response: ' + response);
     if (error) {
       console.log('Error sending UI message to user (error): ' + error.toString());
     } else if (response.body.error) {
-      console.log('Error sending UI message to user (response.body.error): ' + response.body.error);
+      console.log('Error sending UI message to user (response.body.error): ' + JSON.stringify(response.body.error));
     }
   });
 }
