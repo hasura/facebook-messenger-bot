@@ -69,8 +69,12 @@ function sendUIMessageToUser(senderId) {
             template_type: 'generic',
             elements: [
               {
-                title: 'Test Title',
-                subtitle: 'Test subtitle'
+                title: 'Test Title1',
+                subtitle: 'Test subtitle1'
+              },
+              {
+                title: 'Test Title2',
+                subtitle: 'Test subtitle2'
               }
             ]
           }
