@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 let FACEBOOK_VERIFY_TOKEN = "my_password";
 let FACEBOOK_PAGE_ACCESS_TOKEN = "EAAZAZAhL1jbuEBACGr4EzJlNOQd9IZCEyk7J6eJbvbs7qimW16TT1SJ8ol0a4gAESg6iWvLgVZBN4Kv3D4ESRYGJrWfmrBlFjmqODaL5BAN7twhpOS8Cplce34XUppWQsZBZCwgpZAS4z8DBHtEmiteS5CIZAZAqAzkwxYvKvOnBjPgZDZD";
 let FACEBOOK_SEND_MESSAGE_URL = 'https://graph.facebook.com/v2.6/me/messages?access_token=' + FACEBOOK_PAGE_ACCESS_TOKEN;
-
+let MOVIE_DB_PLACEHOLDER_URL = 'http://image.tmdb.org/t/p/w185/';
+let MOVIE_DB_BASE_URL = 'https://www.themoviedb.org/movie/';
 //your routes here
 app.get('/', function (req, res) {
     res.send("Hello World, I am a bot.");
@@ -36,7 +37,7 @@ app.post('/webhook/', function(req, res) {
                 if (!messagingObject.message.is_echo) {
                   //Assuming that everything sent to this bot is a movie name.
                   var movieName = messagingObject.message.text;
-                  // getMovieDetails(senderId, movieName);
+                  getMovieDetails(senderId, movieName);
                   sendUIMessageToUser(senderId);
                 }
               } else if (messagingObject.postback) {
@@ -56,7 +57,7 @@ app.post('/webhook/', function(req, res) {
   res.sendStatus(200);
 })
 
-function sendUIMessageToUser(senderId) {
+function sendUIMessageToUser(senderId, elementList) {
   request({
     url: FACEBOOK_SEND_MESSAGE_URL,
     method: 'POST',
@@ -70,25 +71,7 @@ function sendUIMessageToUser(senderId) {
           payload: {
             template_type: 'generic',
             elements: [
-              {
-                title: 'Test Title1',
-                subtitle: 'Test subtitle1',
-                buttons: [
-                    {
-                      type:"web_url",
-                      url:"https://www.hasura.io",
-                      title:"View Hasura Website"
-                    },{
-                      type:"postback",
-                      title:"Start Chatting",
-                      payload:"DEVELOPER_DEFINED_PAYLOAD"
-                    }
-                ]
-              },
-              {
-                title: 'Test Title2',
-                subtitle: 'Test subtitle2'
-              },              
+                elementList
             ]
           }
         }
@@ -144,6 +127,23 @@ function showTypingIndicatorToUser(senderId, isTyping) {
   });
 }
 
+function getElementObject(result) {
+  var movieName  = result.original_title
+  var overview = result.overview;
+  var posterPath = MOVIE_DB_PLACEHOLDER_URL + result.poster_path;
+  return {
+    title: movieName,
+    subtitle: overview,
+    buttons: [
+        {
+          type: "web_url",
+          url: MOVIE_DB_BASE_URL + result.id,
+          title: "View more details"
+        }
+    ]
+  }
+}
+
 function getMovieDetails(senderId, movieName) {
   showTypingIndicatorToUser(senderId, true);
   var message = 'Found details on ' + movieName;
@@ -156,10 +156,13 @@ function getMovieDetails(senderId, movieName) {
       console.log(res);
       if (res.results) {
         if (res.results.length > 0) {
-          var result = res.results[0];
-          var movieName  = result.original_title
-          var posterPath = result.poster_path
-          sendMessageToUser(senderId, movieName + ": " + posterPath);
+          var elements = []
+          var resultCount =  res.result.length > 5 ? 5 : res.result.length;
+          for (int i = 0; i < resultCount; i++) {
+            var result = res.results[i];
+            elements.push(getElementObject(result));
+            sendUIMessageToUser(senderId, elements);
+          }
         } else {
           sendMessageToUser(senderId, 'Could not find any informationg on ' + movieName);
         }
