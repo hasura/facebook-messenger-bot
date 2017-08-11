@@ -33,9 +33,12 @@ app.post('/webhook/', function(req, res) {
           entry.messaging.forEach(function(messagingObject) {
               var senderId = messagingObject.sender.id;
               if (messagingObject.message) {
-                //Assuming that everything sent to this bot is a movie name.
-                var movieName = messagingObject.message.text;
-                getMovieDetails(senderId, movieName);
+                if (!messagingObject.message.is_echo) {
+                  //Assuming that everything sent to this bot is a movie name.
+                  var movieName = messagingObject.message.text;
+                  // getMovieDetails(senderId, movieName);
+                  sendUIMessageToUser(senderId);
+                }
               }
           });
         } else {
@@ -50,6 +53,58 @@ app.post('/webhook/', function(req, res) {
   }
   res.sendStatus(200);
 })
+
+function sendUIMessageToUser(senderId) {
+  request({
+    url: FACEBOOK_SEND_MESSAGE_URL,
+    method: 'POST',
+    json: {
+      recipient: {
+        id: senderId
+      },
+      message: {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'generic',
+            elements: [
+              {
+    						"title": "Welcome to Peter",
+    						"image_url": "https://petersfancybrownhats.com/company_image.png",
+    						"subtitle": "We",
+    						"default_action": {
+    							"type": "web_url",
+    							"url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
+    							"messenger_extensions": true,
+    							"webview_height_ratio": "tall",
+    							"fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+    						},
+    						"buttons": [
+    							{
+    								"type": "web_url",
+    								"url": "https://petersfancybrownhats.com",
+    								"title": "View Website"
+    							},
+    							{
+    								"type": "postback",
+    								"title": "Start Chatting",
+    								"payload": "DEVELOPER_DEFINED_PAYLOAD"
+    							}
+    						]
+    					}
+            ]
+          }
+        }
+      }
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending message to user: ' + error);
+    } else if (response.body.error){
+      console.log('Error sending message to user: ' + response.body.error);
+    }
+  });
+}
 
 function sendMessageToUser(senderId, message) {
   request({
