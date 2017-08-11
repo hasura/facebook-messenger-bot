@@ -72,9 +72,31 @@ function sendMessageToUser(senderId, message) {
   });
 }
 
+function showTypingIndicatorToUser(senderId, isTyping) {
+  var senderAction = isTyping ? 'typing_on' : 'typing_off';
+  request({
+    url: FACEBOOK_SEND_MESSAGE_URL,
+    method: 'POST',
+    json: {
+      recipient: {
+        id: senderId
+      },
+      sender_action: senderAction
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending typing indicator to user: ' + error);
+    } else if (response.body.error){
+      console.log('Error sending typing indicator to user: ' + response.body.error);
+    }
+  });
+}
+
 function getMovieDetails(senderId, movieName) {
+  showTypingIndicatorToUser(senderId, true);
   var message = 'Found details on ' + movieName;
   mdb.searchMovie({ query: movieName }, (err, res) => {
+    showTypingIndicatorToUser(senderId, false);
     if (err) {
       console.log('Error using movieDB: ' + err);
       sendMessageToUser(senderId, 'Error finding details on ' + movieName);
@@ -89,8 +111,9 @@ function getMovieDetails(senderId, movieName) {
         } else {
           sendMessageToUser(senderId, 'Could not find any informationg on ' + movieName);
         }
+      } else {
+        sendMessageToUser(senderId, message);
       }
-      sendMessageToUser(senderId, message);
     }
   });
 }
