@@ -69,7 +69,7 @@ function sendUIMessageToUser(senderId, elementList) {
           type: 'template',
           payload: {
             template_type: 'generic',
-            elements: elementList            
+            elements: elementList
           }
         }
       }
@@ -131,6 +131,7 @@ function getElementObject(result) {
   return {
     title: movieName,
     subtitle: overview,
+    image_url: posterPath,
     buttons: [
         {
           type: "web_url",
