@@ -78,7 +78,7 @@ function sendUIMessageToUser(senderId) {
                 title: 'Test Title2',
                 subtitle: 'Test subtitle2'
               },
-              buttons:[
+              buttons: [
                   {
                     type:"web_url",
                     url:"https://www.hasura.io",
