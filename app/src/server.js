@@ -80,6 +80,16 @@ function getMovieDetails(senderId, movieName) {
       sendMessageToUser(senderId, 'Error finding details on ' + movieName);
     } else {
       console.log(res);
+      if (res.results) {
+        if (res.results.length > 0) {
+          var result = res.results[0];
+          var movieName  = result.original_title
+          var posterPath = result.poster_path
+          sendMessageToUser(senderId, movieName + ": " + posterPath);
+        } else {
+          sendMessageToUser(senderId, 'Could not find any informationg on ' + movieName);
+        }
+      }
       sendMessageToUser(senderId, message);
     }
   });
