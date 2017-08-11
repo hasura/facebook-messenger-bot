@@ -96,9 +96,9 @@ function sendUIMessageToUser(senderId) {
     }
   }, function(error, response, body) {
         if (error) {
-          console.log('Error sending message to user: ' + error);
+          console.log('Error sending UI message to user: ' + error.toString());
         } else if (response.body.error){
-          console.log('Error sending message to user: ' + response.body.error);
+          console.log('Error sending UI message to user: ' + JSON.stringify(response.body.error));
         }
   });
 }
