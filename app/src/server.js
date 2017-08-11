@@ -69,9 +69,7 @@ function sendUIMessageToUser(senderId, elementList) {
           type: 'template',
           payload: {
             template_type: 'generic',
-            elements: [
-                elementList
-            ]
+            elements: elementList            
           }
         }
       }
