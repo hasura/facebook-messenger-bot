@@ -36,7 +36,8 @@ app.post('/webhook/', function(req, res) {
                 if (!messagingObject.message.is_echo) {
                   //Assuming that everything sent to this bot is a movie name.
                   var movieName = messagingObject.message.text;
-                  getMovieDetails(senderId, movieName);
+                  // getMovieDetails(senderId, movieName);
+                  sendUIMessageToUser(senderId);
                 }
               }
           });
@@ -69,7 +70,7 @@ function sendUIMessageToUser(senderId) {
             elements: [
               {
                 title: 'Test Title',
-                subtitle: 'Test subtitle'              
+                subtitle: 'Test subtitle'
               }
             ]
           }
