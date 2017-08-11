@@ -160,8 +160,8 @@ function getMovieDetails(senderId, movieName) {
           for (i = 0; i < resultCount; i++) {
             var result = res.results[i];
             elements.push(getElementObject(result));
-            sendUIMessageToUser(senderId, elements);
           }
+          sendUIMessageToUser(senderId, elements);
         } else {
           sendMessageToUser(senderId, 'Could not find any informationg on ' + movieName);
         }
