@@ -72,23 +72,23 @@ function sendUIMessageToUser(senderId) {
             elements: [
               {
                 title: 'Test Title1',
-                subtitle: 'Test subtitle1'
+                subtitle: 'Test subtitle1',
+                buttons: [
+                    {
+                      type:"web_url",
+                      url:"https://www.hasura.io",
+                      title:"View Hasura Website"
+                    },{
+                      type:"postback",
+                      title:"Start Chatting",
+                      payload:"DEVELOPER_DEFINED_PAYLOAD"
+                    }
+                ]
               },
               {
                 title: 'Test Title2',
                 subtitle: 'Test subtitle2'
-              },
-              buttons: [
-                  {
-                    type:"web_url",
-                    url:"https://www.hasura.io",
-                    title:"View Hasura Website"
-                  },{
-                    type:"postback",
-                    title:"Start Chatting",
-                    payload:"DEVELOPER_DEFINED_PAYLOAD"
-                  }
-              ]
+              },              
             ]
           }
         }
