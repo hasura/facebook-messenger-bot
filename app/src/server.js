@@ -38,7 +38,6 @@ app.post('/webhook/', function(req, res) {
                   //Assuming that everything sent to this bot is a movie name.
                   var movieName = messagingObject.message.text;
                   getMovieDetails(senderId, movieName);
-                  sendUIMessageToUser(senderId);
                 }
               } else if (messagingObject.postback) {
                 console.log('Received Postback message from ' + senderId);
@@ -157,7 +156,7 @@ function getMovieDetails(senderId, movieName) {
       if (res.results) {
         if (res.results.length > 0) {
           var elements = []
-          var resultCount =  res.result.length > 5 ? 5 : res.result.length;
+          var resultCount =  res.results.length > 5 ? 5 : res.results.length;
           for (i = 0; i < resultCount; i++) {
             var result = res.results[i];
             elements.push(getElementObject(result));
