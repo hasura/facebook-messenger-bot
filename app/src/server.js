@@ -39,6 +39,8 @@ app.post('/webhook/', function(req, res) {
                   // getMovieDetails(senderId, movieName);
                   sendUIMessageToUser(senderId);
                 }
+              } else if (messagingObject.postback) {
+                console.log('Received Postback message from ' + senderId);
               }
           });
         } else {
@@ -76,6 +78,17 @@ function sendUIMessageToUser(senderId) {
                 title: 'Test Title2',
                 subtitle: 'Test subtitle2'
               }
+            ],
+            buttons:[
+                {
+                  type:"web_url",
+                  url:"https://www.hasura.io",
+                  title:"View Hasura Website"
+                },{
+                  type:"postback",
+                  title:"Start Chatting",
+                  payload:"DEVELOPER_DEFINED_PAYLOAD"
+                }
             ]
           }
         }
