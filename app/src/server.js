@@ -13,6 +13,7 @@ let FACEBOOK_PAGE_ACCESS_TOKEN = "EAAZAZAhL1jbuEBACGr4EzJlNOQd9IZCEyk7J6eJbvbs7q
 let FACEBOOK_SEND_MESSAGE_URL = 'https://graph.facebook.com/v2.6/me/messages?access_token=' + FACEBOOK_PAGE_ACCESS_TOKEN;
 let MOVIE_DB_PLACEHOLDER_URL = 'http://image.tmdb.org/t/p/w185/';
 let MOVIE_DB_BASE_URL = 'https://www.themoviedb.org/movie/';
+
 //your routes here
 app.get('/', function (req, res) {
     res.send("Hello World, I am a bot.");
